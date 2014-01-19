@@ -2,7 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
-var through = require('through');
+var through = require('through2');
 var mkdirp = require('mkdirp');
 var vulcanize = require('vulcanize');
 
@@ -13,13 +13,15 @@ module.exports = function (options) {
 		throw new gutil.PluginError('gulp-vulcanize', '`dest` required');
 	}
 
-	return through(function (file) {
+	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			return this.queue(file);
+			this.push(file);
+			return cb();
 		}
 
 		if (file.isStream()) {
-			return this.emit('error', new gutil.PluginError('gulp-vulcanize', 'Streaming not supported'));
+			this.emit('error', new gutil.PluginError('gulp-vulcanize', 'Streaming not supported'));
+			return cb();
 		}
 
 		var self = this;
@@ -30,24 +32,30 @@ module.exports = function (options) {
 
 		mkdirp(options.dest, function (err) {
 			if (err) {
-				return self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+				self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+				self.push(file);
+				return cb();
 			}
 
 			vulcanize.processDocument();
 
 			fs.readFile(destFilename, function (err, data) {
 				if (err) {
-					return self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+					self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+					self.push(file);
+					return cb();
 				}
 
 				var html = data;
 
 				fs.readFile(gutil.replaceExtension(destFilename, '.js'), function (err, data) {
 					if (err && err.code !== 'ENOENT') {
-						return self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+						self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+						self.push(file);
+						return cb();
 					}
 
-					self.queue(new gutil.File({
+					self.push(new gutil.File({
 						cwd: file.cwd,
 						base: file.base,
 						path: file.path,
@@ -55,13 +63,15 @@ module.exports = function (options) {
 					}));
 
 					if (data) {
-						self.queue(new gutil.File({
+						self.push(new gutil.File({
 							cwd: file.cwd,
 							base: file.base,
 							path: gutil.replaceExtension(file.path, '.js'),
 							contents: data
 						}));
 					}
+
+					cb();
 				});
 			});
 		});
