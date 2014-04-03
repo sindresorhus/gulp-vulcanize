@@ -1,4 +1,4 @@
-# [gulp](https://github.com/wearefractal/gulp)-vulcanize [![Build Status](https://secure.travis-ci.org/sindresorhus/gulp-vulcanize.png?branch=master)](http://travis-ci.org/sindresorhus/gulp-vulcanize)
+# [gulp](http://gulpjs.com)-vulcanize [![Build Status](https://travis-ci.org/sindresorhus/gulp-vulcanize.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-vulcanize)
 
 > Concatenate a set of Web Components into one file with [Vulcanize](https://github.com/Polymer/vulcanize)
 
@@ -7,14 +7,12 @@
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-vulcanize)
-
-```
-npm install --save-dev gulp-vulcanize
+```bash
+$ npm install --save-dev gulp-vulcanize
 ```
 
 
-## Example
+## Usage
 
 ```js
 var gulp = require('gulp');
@@ -45,4 +43,4 @@ Unfortunately needed to get correct relative paths in the output.
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
