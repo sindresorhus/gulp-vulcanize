@@ -35,7 +35,7 @@
     "gulp-util": "~2.2.0",
     "through2": "~0.4.0",
     "mkdirp": "~0.3.5",
-    "vulcanize": "~0.1.9"
+    "vulcanize": "~0.3.0"
   },
   "devDependencies": {
     "mocha": "*"

@@ -28,7 +28,7 @@ module.exports = function (options) {
 		var destFilename = path.join(options.dest, path.basename(file.path));
 		options.input = file.path;
 		options.output = destFilename;
-		vulcanize.setOptions(options);
+		vulcanize.setOptions(options, function(){});
 
 		mkdirp(options.dest, function (err) {
 			if (err) {
