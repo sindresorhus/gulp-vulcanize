@@ -1,6 +1,6 @@
 {
   "name": "gulp-vulcanize",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Concatenate a set of Web Components into one file",
   "license": "MIT",
   "repository": "sindresorhus/gulp-vulcanize",
