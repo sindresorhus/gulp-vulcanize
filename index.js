@@ -28,12 +28,11 @@ module.exports = function (options) {
 		var destFilename = path.join(options.dest, path.basename(file.path));
 		options.input = file.path;
 		options.output = destFilename;
-		vulcanize.setOptions(options, function(){});
+		vulcanize.setOptions(options, function () {});
 
 		mkdirp(options.dest, function (err) {
 			if (err) {
-				self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
-				self.push(file);
+				self.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
 				return cb();
 			}
 
@@ -41,8 +40,7 @@ module.exports = function (options) {
 
 			fs.readFile(destFilename, function (err, data) {
 				if (err) {
-					self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
-					self.push(file);
+					self.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
 					return cb();
 				}
 
@@ -50,7 +48,7 @@ module.exports = function (options) {
 
 				fs.readFile(gutil.replaceExtension(destFilename, '.js'), function (err, data) {
 					if (err && err.code !== 'ENOENT') {
-						self.emit('error', new gutil.PluginError('gulp-vulcanize', err));
+						self.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
 						self.push(file);
 						return cb();
 					}

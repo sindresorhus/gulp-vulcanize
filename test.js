@@ -2,7 +2,7 @@
 var assert = require('assert');
 var fs = require('fs');
 var gutil = require('gulp-util');
-var vulcanize = require('./index');
+var vulcanize = require('./');
 
 it('should vulcanize web components', function (cb) {
 	var i = 0;
