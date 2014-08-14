@@ -7,7 +7,7 @@
 
 ## Install
 
-```bash
+```sh
 $ npm install --save-dev gulp-vulcanize
 ```
 
@@ -34,7 +34,7 @@ Same as [grunt-vulcanize](https://github.com/Polymer/grunt-vulcanize#options) pl
 
 #### options.dest
 
-Type: `String`
+Type: `string`
 
 The destination directory.
 
@@ -43,4 +43,4 @@ Unfortunately needed to get correct relative paths in the output.
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)

@@ -15,13 +15,13 @@ module.exports = function (options) {
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			this.push(file);
-			return cb();
+			cb(null, file);
+			return;
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-vulcanize', 'Streaming not supported'));
-			return cb();
+			cb(new gutil.PluginError('gulp-vulcanize', 'Streaming not supported'));
+			return;
 		}
 
 		var self = this;
@@ -32,25 +32,24 @@ module.exports = function (options) {
 
 		mkdirp(options.dest, function (err) {
 			if (err) {
-				self.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-				return cb();
+				cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
+				return;
 			}
 
 			vulcanize.processDocument();
 
 			fs.readFile(destFilename, function (err, data) {
 				if (err) {
-					self.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-					return cb();
+					cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
+					return;
 				}
 
 				var html = data;
 
 				fs.readFile(gutil.replaceExtension(destFilename, '.js'), function (err, data) {
 					if (err && err.code !== 'ENOENT') {
-						self.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-						self.push(file);
-						return cb();
+						cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
+						return;
 					}
 
 					self.push(new gutil.File({

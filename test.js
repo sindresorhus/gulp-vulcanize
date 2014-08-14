@@ -22,11 +22,9 @@ it('should vulcanize web components', function (cb) {
 
 		assert.equal(file.relative, 'index.js');
 		assert(/Polymer/.test(file.contents.toString()));
-
-		if (i === 2) {
-			cb();
-		}
 	});
+
+	stream.on('end', cb);
 
 	stream.write(new gutil.File({
 		cwd: __dirname,
@@ -34,4 +32,6 @@ it('should vulcanize web components', function (cb) {
 		path: __dirname + '/fixture/index.html',
 		contents: fs.readFileSync('fixture/index.html')
 	}));
+
+	stream.end();
 });
