@@ -26,7 +26,7 @@ module.exports = function (options) {
 
 		var self = this;
 		var destFilename = path.join(options.dest, path.basename(file.path));
-		options.input = file.path;
+		options.input = path.join(path.dirname(file.path), '.' + path.basename(file.path));
 		options.output = destFilename;
 		vulcanize.setOptions(options, function () {});
 
@@ -36,7 +36,9 @@ module.exports = function (options) {
 				return;
 			}
 
+			fs.writeFileSync(options.input, file.contents);
 			vulcanize.processDocument();
+			fs.unlinkSync(options.input);
 
 			fs.readFile(destFilename, function (err, data) {
 				if (err) {
