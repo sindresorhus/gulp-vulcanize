@@ -20,7 +20,10 @@ var vulcanize = require('gulp-vulcanize');
 
 gulp.task('default', function () {
 	return gulp.src('src/index.html')
-		.pipe(vulcanize({dest: 'dist'}))
+		.pipe(vulcanize({
+			dest: 'dist',
+			strip: true
+		}))
 		.pipe(gulp.dest('dist'));
 });
 ```
@@ -30,7 +33,7 @@ gulp.task('default', function () {
 
 ### vulcanize(options)
 
-Same as [grunt-vulcanize](https://github.com/Polymer/grunt-vulcanize#options) plus the below.
+These [options](https://github.com/Polymer/grunt-vulcanize#options) plus the below.
 
 #### options.dest
 
