@@ -25,10 +25,6 @@ module.exports = function (options) {
 		}
 
 		var self = this;
-		var destFilename = path.join(options.dest, path.basename(file.path));
-		options.input = path.join(path.dirname(file.path), '.' + path.basename(file.path));
-		options.output = destFilename;
-		vulcanize.setOptions(options, function () {});
 
 		mkdirp(options.dest, function (err) {
 			if (err) {
@@ -36,43 +32,24 @@ module.exports = function (options) {
 				return;
 			}
 
-			fs.writeFileSync(options.input, file.contents);
-			vulcanize.processDocument();
-			fs.unlinkSync(options.input);
+			options.input = file.path;
+			options.inputSrc = file.contents;
+			options.output = path.join(options.dest, path.basename(file.path));
+			options.outputSrc = function(filename, data, eof) {
+				self.push(new gutil.File({
+					cwd: file.cwd,
+					base: path.dirname(filename),
+					path: filename,
+					contents: new Buffer(data)
+				}));
 
-			fs.readFile(destFilename, function (err, data) {
-				if (err) {
-					cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-					return;
-				}
-
-				var html = data;
-
-				fs.readFile(gutil.replaceExtension(destFilename, '.js'), function (err, data) {
-					if (err && err.code !== 'ENOENT') {
-						cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-						return;
-					}
-
-					self.push(new gutil.File({
-						cwd: file.cwd,
-						base: file.base,
-						path: file.path,
-						contents: html
-					}));
-
-					if (data) {
-						self.push(new gutil.File({
-							cwd: file.cwd,
-							base: file.base,
-							path: gutil.replaceExtension(file.path, '.js'),
-							contents: data
-						}));
-					}
-
+				if (eof) {
 					cb();
-				});
-			});
+				}
+			};
+
+			vulcanize.setOptions(options, function () {});
+			vulcanize.processDocument();
 		});
 	});
 };
