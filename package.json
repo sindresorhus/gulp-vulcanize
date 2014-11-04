@@ -19,7 +19,7 @@
     "index.js"
   ],
   "keywords": [
-    "gulpfriendly",
+    "gulpplugin",
     "polymer",
     "vulcanize",
     "vulcan",
@@ -33,7 +33,6 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "mkdirp": "^0.5.0",
     "through2": "^0.6.1",
     "vulcanize": "^0.6.1"
   },

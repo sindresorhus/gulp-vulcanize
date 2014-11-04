@@ -3,7 +3,6 @@ var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var mkdirp = require('mkdirp');
 var vulcanize = require('vulcanize');
 
 module.exports = function (options) {
@@ -24,32 +23,28 @@ module.exports = function (options) {
 			return;
 		}
 
-		var self = this;
+		options.input = file.path;
+		options.inputSrc = file.contents;
+		options.output = path.join(options.dest, path.basename(file.path));
+		options.outputSrc = function(filename, data, finished) {
+			this.push(new gutil.File({
+				cwd: file.cwd,
+				base: path.dirname(filename),
+				path: filename,
+				contents: new Buffer(data)
+			}));
 
-		mkdirp(options.dest, function (err) {
-			if (err) {
-				cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-				return;
+			if (finished) {
+				cb();
 			}
+		}.bind(this);
 
-			options.input = file.path;
-			options.inputSrc = file.contents;
-			options.output = path.join(options.dest, path.basename(file.path));
-			options.outputSrc = function(filename, data, eof) {
-				self.push(new gutil.File({
-					cwd: file.cwd,
-					base: path.dirname(filename),
-					path: filename,
-					contents: new Buffer(data)
-				}));
+		vulcanize.setOptions(options, function () {});
 
-				if (eof) {
-					cb();
-				}
-			};
-
-			vulcanize.setOptions(options, function () {});
+		try {
 			vulcanize.processDocument();
-		});
+		} catch (err) {
+			this.emit('error', new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
+		}
 	});
 };
