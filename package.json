@@ -37,6 +37,8 @@
     "vulcanize": "^0.7.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mkdirp": "^0.5.0",
+    "mocha": "*",
+    "rimraf": "^2.2.8"
   }
 }
