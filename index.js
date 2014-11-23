@@ -4,10 +4,10 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var vulcanize = require('vulcanize');
 
-module.exports = function (options) {
-	options = options || {};
+module.exports = function (opts) {
+	opts = opts || {};
 
-	if (!options.dest) {
+	if (!opts.dest) {
 		throw new gutil.PluginError('gulp-vulcanize', '`dest` required');
 	}
 
@@ -22,10 +22,10 @@ module.exports = function (options) {
 			return;
 		}
 
-		options.input = file.path;
-		options.inputSrc = file.contents;
-		options.output = path.join(options.dest, file.relative);
-		options.outputHandler = function(filename, data, finished) {
+		opts.input = file.path;
+		opts.inputSrc = file.contents;
+		opts.output = path.join(opts.dest, file.relative);
+		opts.outputHandler = function(filename, data, finished) {
 			this.push(new gutil.File({
 				cwd: file.cwd,
 				base: path.dirname(filename),
@@ -38,7 +38,7 @@ module.exports = function (options) {
 			}
 		}.bind(this);
 
-		vulcanize.setOptions(options, function () {});
+		vulcanize.setOptions(opts, function () {});
 
 		try {
 			vulcanize.processDocument();
