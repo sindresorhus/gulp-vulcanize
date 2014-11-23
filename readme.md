@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-vulcanize [![Build Status](https://travis-ci.org/sindresorhus/gulp-vulcanize.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-vulcanize)
+# gulp-vulcanize [![Build Status](https://travis-ci.org/sindresorhus/gulp-vulcanize.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-vulcanize)
 
 > Concatenate a set of Web Components into one file with [Vulcanize](https://github.com/Polymer/vulcanize)
 
@@ -19,12 +19,14 @@ var gulp = require('gulp');
 var vulcanize = require('gulp-vulcanize');
 
 gulp.task('default', function () {
+	var DEST_DIR = 'dist';
+
 	return gulp.src('src/index.html')
 		.pipe(vulcanize({
-			dest: 'dist',
+			dest: DEST_DIR,
 			strip: true
 		}))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest(DEST_DIR));
 });
 ```
 
@@ -37,6 +39,7 @@ These [options](https://github.com/Polymer/grunt-vulcanize#options) plus the bel
 
 #### options.dest
 
+*Required*  
 Type: `string`
 
 The destination directory.
