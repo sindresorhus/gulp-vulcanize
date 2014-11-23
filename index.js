@@ -24,7 +24,7 @@ module.exports = function (options) {
 
 		options.input = file.path;
 		options.inputSrc = file.contents;
-		options.output = path.join(options.dest, file.path.replace(file.base, ''));
+		options.output = path.join(options.dest, file.relative);
 		options.outputHandler = function(filename, data, finished) {
 			this.push(new gutil.File({
 				cwd: file.cwd,
