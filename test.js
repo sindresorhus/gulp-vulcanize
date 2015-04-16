@@ -11,7 +11,7 @@ function copyTestFile(src, dest) {
 	fs.writeFileSync(dest, fs.readFileSync(src, 'utf8'));
 }
 
-describe('should vulcanize web components:', function (argument) {
+describe('should vulcanize web components:', function () {
 	var targets = ['', '/abc', '/xyz', '/xyz/abs'];
 
 	before(function () {
@@ -43,9 +43,9 @@ describe('should vulcanize web components:', function (argument) {
 
 		stream.write(new gutil.File({
 			cwd: __dirname,
-			base: 'tmp/src',
-			path: 'tmp/src/index.html',
-			contents: fs.readFileSync('tmp/src/index.html')
+			base: path.join(__dirname, 'tmp', 'src'),
+			path: path.join('tmp', 'src', 'index.html'),
+			contents: fs.readFileSync(path.join('tmp', 'src', 'index.html'))
 		}));
 
 		stream.end();
@@ -55,23 +55,19 @@ describe('should vulcanize web components:', function (argument) {
 		var stream = vulcanize();
 
 		stream.on('data', function (file) {
-			var t = path.dirname(file.path).replace('tmp/src', '');
-
+			var t = path.dirname(file.path).replace(path.join(file.cwd, 'tmp', 'src') , '');
 			assert.notStrictEqual(targets.indexOf(t), -1);
-			assert.strictEqual(file.relative, 'index.html');
 			assert(/Imported/.test(file.contents.toString()));
 		});
 
 		stream.on('end', cb);
 
 		targets.forEach(function (el) {
-			var src = path.join('tmp', 'src', el);
-
 			stream.write(new gutil.File({
 				cwd: __dirname,
-				base: 'tmp/src',
-				path: src + '/index.html',
-				contents: fs.readFileSync(src + '/index.html')
+				base: path.join(__dirname, 'tmp', 'src'),
+				path: path.join(__dirname, 'tmp', 'src', el, 'index.html'),
+				contents: fs.readFileSync(path.join(__dirname, 'tmp/src', 'index.html'))
 			}));
 		});
 

@@ -17,21 +17,17 @@ module.exports = function (opts) {
 			cb(new gutil.PluginError('gulp-vulcanize', 'Streaming not supported'));
 			return;
 		}
-	
-		vulcanize.setOptions(opts, function () {});
 
-		vulcanize.process(file.path, function(err, inlinedHtml) {
+		vulcanize.setOptions(opts);
+
+		vulcanize.process(file.path, function (err, inlinedHtml) {
 			if (err) {
 				cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
-			} else {
-				this.push(new gutil.File({
-					cwd: file.cwd,
-					base: path.dirname(file.path),
-					path: file.path,
-					contents: new Buffer(inlinedHtml)
-				}));
-				cb();
+				return;
 			}
+
+			file.contents = new Buffer(inlinedHtml);
+			cb(null, file);
 		}.bind(this));
 	});
 };
