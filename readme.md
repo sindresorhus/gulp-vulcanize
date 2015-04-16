@@ -19,12 +19,11 @@ var gulp = require('gulp');
 var vulcanize = require('gulp-vulcanize');
 
 gulp.task('default', function () {
-	var DEST_DIR = 'dist';
-
 	return gulp.src('src/index.html')
 		.pipe(vulcanize({
-			dest: DEST_DIR,
-			strip: true
+			abspath: '',
+			excludes: [],
+			stripExcludes: false
 		}))
 		.pipe(gulp.dest(DEST_DIR));
 });
@@ -35,16 +34,7 @@ gulp.task('default', function () {
 
 ### vulcanize(options)
 
-These [options](https://github.com/Polymer/grunt-vulcanize#options) plus the below.
-
-#### options.dest
-
-*Required*  
-Type: `string`
-
-The destination directory.
-
-Unfortunately needed to get correct relative paths in the output.
+These [options](https://github.com/Polymer/vulcanize/tree/v1.0.0#using-vulcanize-programmatically).
 
 
 ## License

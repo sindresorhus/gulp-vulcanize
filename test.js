@@ -27,10 +27,7 @@ describe('should vulcanize web components:', function (argument) {
 	});
 
 	it('single', function (cb) {
-		var stream = vulcanize({
-			dest: 'tmp/build',
-			csp: true
-		});
+		var stream = vulcanize();
 
 		stream.on('data', function (file) {
 			if (/\.html$/.test(file.path)) {
@@ -38,7 +35,6 @@ describe('should vulcanize web components:', function (argument) {
 				assert(/Imported/.test(file.contents.toString()));
 				return;
 			}
-
 			assert.equal(file.relative, 'index.js');
 			assert(/Polymer/.test(file.contents.toString()));
 		});
@@ -56,12 +52,11 @@ describe('should vulcanize web components:', function (argument) {
 	});
 
 	it('multiple', function (cb) {
-		var stream = vulcanize({
-			dest: 'tmp/build'
-		});
+		var stream = vulcanize();
 
 		stream.on('data', function (file) {
-			var t = path.dirname(file.path).replace('tmp/build', '');
+			var t = path.dirname(file.path).replace('tmp/src', '');
+
 			assert.notStrictEqual(targets.indexOf(t), -1);
 			assert.strictEqual(file.relative, 'index.html');
 			assert(/Imported/.test(file.contents.toString()));
@@ -71,6 +66,7 @@ describe('should vulcanize web components:', function (argument) {
 
 		targets.forEach(function (el) {
 			var src = path.join('tmp', 'src', el);
+
 			stream.write(new gutil.File({
 				cwd: __dirname,
 				base: 'tmp/src',
