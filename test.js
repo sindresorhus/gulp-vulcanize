@@ -12,7 +12,12 @@ function copyTestFile(src, dest) {
 }
 
 describe('should vulcanize web components:', function () {
-	var targets = ['', '/abc', '/xyz', '/xyz/abs'];
+	var targets = [
+		'',
+		path.join('/abc'),
+		path.join('/xyz'),
+		path.join('/xyz', 'abs')
+	];
 
 	before(function () {
 		rimraf.sync('tmp');
@@ -67,7 +72,7 @@ describe('should vulcanize web components:', function () {
 				cwd: __dirname,
 				base: path.join(__dirname, 'tmp', 'src'),
 				path: path.join(__dirname, 'tmp', 'src', el, 'index.html'),
-				contents: fs.readFileSync(path.join(__dirname, 'tmp/src', 'index.html'))
+				contents: fs.readFileSync(path.join(__dirname, 'tmp', 'src', 'index.html'))
 			}));
 		});
 
