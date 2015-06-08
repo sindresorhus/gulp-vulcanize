@@ -1,8 +1,10 @@
-<polymer-element name="x-import">
+<dom-module id="x-import">
 	<template>
 		[Imported: <content></content>]
 	</template>
 	<script>
-		Polymer('x-import');
+		Polymer({
+			is: 'x-import'
+		});
 	</script>
-</polymer-element>
+</dom-module>
