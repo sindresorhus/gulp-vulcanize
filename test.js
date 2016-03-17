@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 'use strict';
 var assert = require('assert');
 var fs = require('fs');
@@ -60,7 +61,7 @@ describe('should vulcanize web components:', function () {
 		var stream = vulcanize();
 
 		stream.on('data', function (file) {
-			var t = path.dirname(file.path).replace(path.join(file.cwd, 'tmp', 'src') , '');
+			var t = path.dirname(file.path).replace(path.join(file.cwd, 'tmp', 'src'), '');
 			assert.notStrictEqual(targets.indexOf(t), -1);
 			assert(/Imported/.test(file.contents.toString()));
 		});

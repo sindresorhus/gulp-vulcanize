@@ -25,6 +25,6 @@ module.exports = function (opts) {
 
 			file.contents = new Buffer(inlinedHtml);
 			cb(null, file);
-		}.bind(this));
+		});
 	});
 };
