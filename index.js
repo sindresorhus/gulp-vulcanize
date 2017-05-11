@@ -1,12 +1,12 @@
 'use strict';
-var gutil = require('gulp-util');
-var through = require('through2');
-var Vulcanize = require('vulcanize');
+const gutil = require('gulp-util');
+const through = require('through2');
+const Vulcanize = require('vulcanize');
 
-module.exports = function (opts) {
+module.exports = opts => {
 	opts = opts || {};
 
-	return through.obj(function (file, enc, cb) {
+	return through.obj((file, enc, cb) => {
 		if (file.isNull()) {
 			cb(null, file);
 			return;
@@ -17,13 +17,13 @@ module.exports = function (opts) {
 			return;
 		}
 
-		(new Vulcanize(opts)).process(file.path, function (err, inlinedHtml) {
+		(new Vulcanize(opts)).process(file.path, (err, inlinedHtml) => {
 			if (err) {
 				cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
 				return;
 			}
 
-			file.contents = new Buffer(inlinedHtml);
+			file.contents = new Buffer(inlinedHtml); // eslint-disable-line unicorn/no-new-buffer
 			cb(null, file);
 		});
 	});

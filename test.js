@@ -1,41 +1,41 @@
 /* eslint-env mocha */
 'use strict';
-var assert = require('assert');
-var fs = require('fs');
-var path = require('path');
-var gutil = require('gulp-util');
-var mkdirp = require('mkdirp');
-var rimraf = require('rimraf');
-var vulcanize = require('./');
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const gutil = require('gulp-util');
+const makeDir = require('make-dir');
+const del = require('del');
+const vulcanize = require('.');
 
 function copyTestFile(src, dest) {
 	fs.writeFileSync(dest, fs.readFileSync(src, 'utf8'));
 }
 
-describe('should vulcanize web components:', function () {
-	var targets = [
+describe('should vulcanize web components:', () => {
+	const targets = [
 		'',
 		path.join('/abc'),
 		path.join('/xyz'),
 		path.join('/xyz', 'abs')
 	];
 
-	before(function () {
-		rimraf.sync('tmp');
-		mkdirp.sync('tmp');
+	before(() => {
+		del.sync('tmp');
+		makeDir.sync('tmp');
 
-		targets.forEach(function (el) {
-			var dest = path.join('tmp', 'src', el);
-			mkdirp.sync(dest);
+		for (const target of targets) {
+			const dest = path.join('tmp/src', target);
+			makeDir.sync(dest);
 			copyTestFile('fixture/index.html', path.join(dest, 'index.html'));
 			copyTestFile('fixture/import.html', path.join(dest, 'import.html'));
-		});
+		}
 	});
 
-	it('single', function (cb) {
-		var stream = vulcanize();
+	it('single', cb => {
+		const stream = vulcanize();
 
-		stream.on('data', function (file) {
+		stream.on('data', file => {
 			if (/\.html$/.test(file.path)) {
 				assert.equal(file.relative, 'index.html');
 				assert(/Imported/.test(file.contents.toString()));
@@ -57,18 +57,18 @@ describe('should vulcanize web components:', function () {
 		stream.end();
 	});
 
-	it('multiple', function (cb) {
-		var stream = vulcanize();
+	it('multiple', cb => {
+		const stream = vulcanize();
 
-		stream.on('data', function (file) {
-			var t = path.dirname(file.path).replace(path.join(file.cwd, 'tmp', 'src'), '');
+		stream.on('data', file => {
+			const t = path.dirname(file.path).replace(path.join(file.cwd, 'tmp', 'src'), '');
 			assert.notStrictEqual(targets.indexOf(t), -1);
 			assert(/Imported/.test(file.contents.toString()));
 		});
 
 		stream.on('end', cb);
 
-		targets.forEach(function (el) {
+		targets.forEach(el => {
 			stream.write(new gutil.File({
 				cwd: __dirname,
 				base: path.join(__dirname, 'tmp', 'src'),
