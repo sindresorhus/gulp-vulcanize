@@ -1,44 +1,46 @@
 {
-  "name": "gulp-vulcanize",
-  "version": "6.1.0",
-  "description": "Concatenate a set of Web Components into one file",
-  "license": "MIT",
-  "repository": "sindresorhus/gulp-vulcanize",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && mocha"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "gulpplugin",
-    "polymer",
-    "vulcanize",
-    "vulcan",
-    "rewriting",
-    "transformation",
-    "concat",
-    "concatenate",
-    "web",
-    "components"
-  ],
-  "dependencies": {
-    "gulp-util": "^3.0.0",
-    "through2": "^2.0.0",
-    "vulcanize": "^1.9.1"
-  },
-  "devDependencies": {
-    "del": "^2.2.2",
-    "make-dir": "^1.0.0",
-    "mocha": "*",
-    "xo": "*"
-  }
+	"name": "gulp-vulcanize",
+	"version": "6.1.0",
+	"description": "Concatenate a set of Web Components into one file",
+	"license": "MIT",
+	"repository": "sindresorhus/gulp-vulcanize",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && mocha"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"gulpplugin",
+		"polymer",
+		"vulcanize",
+		"vulcan",
+		"rewriting",
+		"transformation",
+		"concat",
+		"concatenate",
+		"web",
+		"components"
+	],
+	"dependencies": {
+		"plugin-error": "^0.1.2",
+		"safe-buffer": "^5.1.1",
+		"through2": "^2.0.0",
+		"vulcanize": "^1.9.1"
+	},
+	"devDependencies": {
+		"del": "^3.0.0",
+		"make-dir": "^1.0.0",
+		"mocha": "*",
+		"vinyl": "^2.1.0",
+		"xo": "*"
+	}
 }

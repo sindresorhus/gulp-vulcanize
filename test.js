@@ -3,9 +3,9 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const gutil = require('gulp-util');
 const makeDir = require('make-dir');
 const del = require('del');
+const Vinyl = require('vinyl');
 const vulcanize = require('.');
 
 function copyTestFile(src, dest) {
@@ -47,14 +47,12 @@ describe('should vulcanize web components:', () => {
 
 		stream.on('end', cb);
 
-		stream.write(new gutil.File({
+		stream.end(new Vinyl({
 			cwd: __dirname,
 			base: path.join(__dirname, 'tmp', 'src'),
 			path: path.join('tmp', 'src', 'index.html'),
 			contents: fs.readFileSync(path.join('tmp', 'src', 'index.html'))
 		}));
-
-		stream.end();
 	});
 
 	it('multiple', cb => {
@@ -69,7 +67,7 @@ describe('should vulcanize web components:', () => {
 		stream.on('end', cb);
 
 		targets.forEach(el => {
-			stream.write(new gutil.File({
+			stream.write(new Vinyl({
 				cwd: __dirname,
 				base: path.join(__dirname, 'tmp', 'src'),
 				path: path.join(__dirname, 'tmp', 'src', el, 'index.html'),

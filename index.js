@@ -1,10 +1,11 @@
 'use strict';
-const gutil = require('gulp-util');
 const through = require('through2');
 const Vulcanize = require('vulcanize');
+const PluginError = require('plugin-error');
+const Buffer = require('safe-buffer').Buffer;
 
-module.exports = opts => {
-	opts = opts || {};
+module.exports = options => {
+	options = options || {};
 
 	return through.obj((file, enc, cb) => {
 		if (file.isNull()) {
@@ -13,17 +14,17 @@ module.exports = opts => {
 		}
 
 		if (file.isStream()) {
-			cb(new gutil.PluginError('gulp-vulcanize', 'Streaming not supported'));
+			cb(new PluginError('gulp-vulcanize', 'Streaming not supported'));
 			return;
 		}
 
-		(new Vulcanize(opts)).process(file.path, (err, inlinedHtml) => {
+		(new Vulcanize(options)).process(file.path, (err, inlinedHtml) => {
 			if (err) {
-				cb(new gutil.PluginError('gulp-vulcanize', err, {fileName: file.path}));
+				cb(new PluginError('gulp-vulcanize', err, {fileName: file.path}));
 				return;
 			}
 
-			file.contents = new Buffer(inlinedHtml); // eslint-disable-line unicorn/no-new-buffer
+			file.contents = Buffer.from(inlinedHtml);
 			cb(null, file);
 		});
 	});
