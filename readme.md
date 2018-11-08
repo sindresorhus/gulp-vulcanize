@@ -1,3 +1,9 @@
+# Deprecated
+
+The Vulcanize project is no more.
+
+---
+
 # gulp-vulcanize [![Build Status](https://travis-ci.org/sindresorhus/gulp-vulcanize.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-vulcanize)
 
 > Concatenate a set of Web Components into one file with [`Vulcanize`](https://github.com/Polymer/vulcanize)
